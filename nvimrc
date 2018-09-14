@@ -93,3 +93,8 @@ let g:NERDTreeIndicatorMapCustom = {
     \ 'Ignored'   : '☒ ',
     \ "Unknown"   : "? "
     \ }
+
+" disable C-j mapping in nerdtree, so that it doesnt conflict with the smart
+" windows navigation
+let g:NERDTreeMapJumpNextSibling="‚òª"
+let g:NERDTreeMapJumpPrevSibling="‚ò∫"
