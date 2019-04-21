@@ -22,12 +22,15 @@ let mapleader = " "
 " load vim plugins
 call plug#begin('~/.local/share/nvim/plugged')
 
-Plug 'scrooloose/nerdtree'
-" Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'editorconfig/editorconfig-vim'
-Plug 'rakr/vim-one'
-Plug 'pangloss/vim-javascript'
 Plug 'HerringtonDarkholme/yats.vim'
+Plug 'pangloss/vim-javascript'
+Plug 'tpope/vim-fugitive'
+Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'editorconfig/editorconfig-vim'
+" Plug 'rakr/vim-one'
+" Plug 'pangloss/vim-javascript'
+" Plug 'HerringtonDarkholme/yats.vim'
 Plug 'tpope/vim-commentary'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'mileszs/ack.vim'
@@ -38,6 +41,7 @@ Plug 'mileszs/ack.vim'
 " Plug 'ncm2/ncm2-path'
 Plug 'Yggdroot/indentLine'
 Plug 'jiangmiao/auto-pairs'
+Plug 'tpope/vim-surround',
 " Plug 'autozimu/LanguageClient-neovim', {
 "     \ 'branch': 'next',
 "     \ 'do': 'bash install.sh',
@@ -47,11 +51,13 @@ Plug '/usr/local/opt/fzf'
 Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
 Plug 'junegunn/fzf.vim'
 " Plug 'w0rp/ale'
-Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline'
+Plug 'itchyny/lightline.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'ryanoasis/vim-devicons'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'cocopon/iceberg.vim'
+Plug 'drewtempelmeyer/palenight.vim'
 call plug#end()
 
 " let g:LanguageClient_autoStart = 1
@@ -70,11 +76,15 @@ call plug#end()
 " inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " colortheme
-let g:one_allow_italics = 1 
-let g:airline_theme='iceberg'
-colorscheme iceberg
+" let g:one_allow_italics = 1 
 set background=dark
+colorscheme palenight
+let g:lightline = {
+      \ 'colorscheme': 'palenight',
+      \ }
+let g:palenight_terminal_italics=1
 
+hi Comment gui=italic cterm=italic term=italic
 highlight Include gui=italic
 highlight htmlArg gui=italic
 highlight Keyword gui=italic
@@ -197,8 +207,18 @@ inoremap <silent><expr> <c-space> coc#refresh()
 " Coc only does snippet and additional edit on confirm.
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
-nnoremap <silent><C-_> :Ag<CR>
+nnoremap <silent><C-a> :Ag<CR>
 nnoremap <silent> <C-p> :GFiles<CR>
 let g:NERDTreeLimitedSyntax = 1
 let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
 let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
+
+augroup nvim_term
+  au!
+  au TermOpen * startinsert
+  au TermClose * stopinsert
+augroup END
+
+set tabstop=2 shiftwidth=2 expandtab
+let g:indentLine_setConceal = 0
+set conceallevel=0
