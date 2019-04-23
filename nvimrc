@@ -28,30 +28,16 @@ Plug 'tpope/vim-fugitive'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'editorconfig/editorconfig-vim'
-" Plug 'rakr/vim-one'
-" Plug 'pangloss/vim-javascript'
-" Plug 'HerringtonDarkholme/yats.vim'
 Plug 'tpope/vim-commentary'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'mileszs/ack.vim'
-" Plug 'roxma/nvim-yarp'
-" Plug 'ncm2/ncm2'
-" Plug 'ncm2/ncm2-bufword'
-" Plug 'ncm2/ncm2-tmux'
-" Plug 'ncm2/ncm2-path'
 Plug 'Yggdroot/indentLine'
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-surround',
-" Plug 'autozimu/LanguageClient-neovim', {
-"     \ 'branch': 'next',
-"     \ 'do': 'bash install.sh',
-"     \ }
 
 Plug '/usr/local/opt/fzf'
 Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
 Plug 'junegunn/fzf.vim'
-" Plug 'w0rp/ale'
-" Plug 'vim-airline/vim-airline'
 Plug 'itchyny/lightline.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'ryanoasis/vim-devicons'
