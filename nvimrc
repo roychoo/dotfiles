@@ -31,7 +31,7 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'tpope/vim-commentary'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'mileszs/ack.vim'
-Plug 'Yggdroot/indentLine'
+Plug 'nathanaelkane/vim-indent-guides'
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-surround',
 
@@ -44,6 +44,8 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'cocopon/iceberg.vim'
 Plug 'drewtempelmeyer/palenight.vim'
+Plug 'epilande/vim-react-snippets'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 call plug#end()
 
 " let g:LanguageClient_autoStart = 1
@@ -83,7 +85,7 @@ nmap <c-e> :NERDTreeToggle<cr>
 " nmap <c-g> :Ag<cr>
 
 " show indent tabs
-set list lcs=tab:\|\ 
+" set list lcs=tab:\|\ 
 
 let g:ale_fixers = {
   \ 'javascript': ['eslint'],
@@ -131,7 +133,7 @@ function! s:show_documentation()
 endfunction
 
 " Highlight symbol under cursor on CursorHold
-autocmd CursorHold * silent call CocActionAsync('highlight')
+" autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Remap for rename current word
 nmap <leader>rn <Plug>(coc-rename)
@@ -163,10 +165,6 @@ command! -nargs=0 Format :call CocAction('format')
 " Use `:Fold` for fold current buffer
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
-inoremap <expr> <TAB> pumvisible() ? "\<C-y>" : "\<TAB>"
-let g:coc_snippet_next = '<TAB>'
-let g:coc_snippet_prev = '<S-TAB>'
-
 command! -bang -nargs=* Ag
   \ call fzf#vim#ag(<q-args>,
   \                 <bang>0 ? fzf#vim#with_preview('up:60%')
@@ -181,6 +179,21 @@ inoremap <silent><expr> <C-j>
       \ coc#refresh()
 inoremap <expr><C-k> pumvisible() ? "\<C-p>" : "\<C-h>"
 
+" Use <C-l> for trigger snippet expand.
+" imap <C-l> <Plug>(coc-snippets-expand)
+
+" Use <C-j> for select text for visual placeholder of snippet.
+vmap <C-j> <Plug>(coc-snippets-select)
+
+" Use <C-j> for jump to next placeholder, it's default of coc.nvim
+let g:coc_snippet_next = '<c-j>'
+
+" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+let g:coc_snippet_prev = '<c-k>'
+
+" Use <C-j> for both expand and jump (make expand higher priority.)
+" imap <C-j> <Plug>(coc-snippets-expand-jump)
+
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
@@ -191,7 +204,7 @@ inoremap <silent><expr> <c-space> coc#refresh()
 
 " Use <cr> for confirm completion, `<C-g>u` means break undo chain at current position.
 " Coc only does snippet and additional edit on confirm.
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 nnoremap <silent><C-a> :Ag<CR>
 nnoremap <silent> <C-p> :GFiles<CR>
@@ -206,5 +219,15 @@ augroup nvim_term
 augroup END
 
 set tabstop=2 shiftwidth=2 expandtab
-let g:indentLine_setConceal = 0
 set conceallevel=0
+let g:indent_guides_enable_on_vim_startup = 1
+
+let g:go_list_type="quickfix"
+let g:go_fmt_command="goimports"
+let g:go_highlight_types=1
+let g:go_highlight_fields=1
+let g:go_highlight_functions=1
+let g:go_highlight_function_calls=1
+let g:go_fmt_fail_silently=1
+let g:go_def_mode='gopls'
+let g:go_info_mode='gopls'
