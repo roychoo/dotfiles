@@ -46,6 +46,10 @@ Plug 'cocopon/iceberg.vim'
 Plug 'drewtempelmeyer/palenight.vim'
 Plug 'epilande/vim-react-snippets'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'morhetz/gruvbox'
+Plug 'reasonml-editor/vim-reason-plus'
+Plug 'chriskempson/base16-vim'
+Plug 'ElmCast/elm-vim'
 call plug#end()
 
 " let g:LanguageClient_autoStart = 1
@@ -64,13 +68,14 @@ call plug#end()
 " inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " colortheme
-" let g:one_allow_italics = 1 
-set background=dark
-colorscheme palenight
-let g:lightline = {
-      \ 'colorscheme': 'palenight',
-      \ }
-let g:palenight_terminal_italics=1
+if filereadable(expand("~/.vimrc_background"))
+  let base16colorspace=256
+  source ~/.vimrc_background
+endif
+" let g:gruvbox_italic=1
+" set background=dark
+" colorscheme gruvbox
+" let g:palenight_terminal_italics=1
 
 hi Comment gui=italic cterm=italic term=italic
 highlight Include gui=italic
