@@ -8,7 +8,7 @@ set hidden
 set cmdheight=2
 
 " Smaller updatetime for CursorHold & CursorHoldI
-set updatetime=300
+set updatetime=750
 
 " don't give |ins-completion-menu| messages.
 set shortmess+=c
@@ -22,6 +22,7 @@ let mapleader = " "
 " load vim plugins
 call plug#begin('~/.local/share/nvim/plugged')
 
+Plug 'solarnz/thrift.vim'
 Plug 'HerringtonDarkholme/yats.vim'
 Plug 'pangloss/vim-javascript'
 Plug 'tpope/vim-fugitive'
@@ -50,6 +51,8 @@ Plug 'morhetz/gruvbox'
 Plug 'reasonml-editor/vim-reason-plus'
 Plug 'chriskempson/base16-vim'
 Plug 'ElmCast/elm-vim'
+Plug 'dense-analysis/ale'
+Plug 'honza/vim-snippets'
 call plug#end()
 
 " let g:LanguageClient_autoStart = 1
@@ -92,10 +95,10 @@ nmap <c-e> :NERDTreeToggle<cr>
 " show indent tabs
 " set list lcs=tab:\|\ 
 
-let g:ale_fixers = {
-  \ 'javascript': ['eslint'],
-  \ 'typescript': ['tslint']
-  \ }
+" let g:ale_fixers = {
+"   \ 'javascript': ['eslint'],
+"   \ 'typescript': ['tslint']
+"   \ }
 
 " nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
 " nnoremap <c-s> :call LanguageClient#textDocument_documentSymbol()<CR>
@@ -172,6 +175,7 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
 command! -bang -nargs=* Ag
   \ call fzf#vim#ag(<q-args>,
+  \                 '--color-path "1;36"',
   \                 <bang>0 ? fzf#vim#with_preview('up:60%')
   \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
   \                 <bang>0)
@@ -184,38 +188,53 @@ inoremap <silent><expr> <C-j>
       \ coc#refresh()
 inoremap <expr><C-k> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-" Use <C-l> for trigger snippet expand.
-" imap <C-l> <Plug>(coc-snippets-expand)
-
-" Use <C-j> for select text for visual placeholder of snippet.
-vmap <C-j> <Plug>(coc-snippets-select)
-
-" Use <C-j> for jump to next placeholder, it's default of coc.nvim
-let g:coc_snippet_next = '<c-j>'
-
-" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
-let g:coc_snippet_prev = '<c-k>'
-
-" Use <C-j> for both expand and jump (make expand higher priority.)
-" imap <C-j> <Plug>(coc-snippets-expand-jump)
-
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-" Use <c-space> for trigger completion.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" " Use <C-l> for trigger snippet expand.
+" imap <C-y> <Plug>(coc-snippets-expand)
+
+" " Use <C-j> for select text for visual placeholder of snippet.
+" vmap <C-j> <Plug>(coc-snippets-select)
+
+" " Use <C-j> for jump to next placeholder, it's default of coc.nvim
+" let g:coc_snippet_next = '<c-j>'
+
+" " Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+" let g:coc_snippet_prev = '<c-k>'
+" inoremap <silent><expr> <TAB>
+"       \ pumvisible() ? "\<C-n>" :
+"       \ <SID>check_back_space() ? "\<TAB>" :
+"       \ coc#refresh()
+" inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+" Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <C-j> for both expand and jump (make expand higher priority.)
+" imap <C-j> <Plug>(coc-snippets-expand-jump)
+
+" function! s:check_back_space() abort
+"   let col = col('.') - 1
+"   return !col || getline('.')[col - 1]  =~# '\s'
+" endfunction
+
+" " Use <c-space> for trigger completion.
+" inoremap <silent><expr> <c-space> coc#refresh()
 
 " Use <cr> for confirm completion, `<C-g>u` means break undo chain at current position.
 " Coc only does snippet and additional edit on confirm.
 " inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 nnoremap <silent><C-a> :Ag<CR>
-nnoremap <silent> <C-p> :GFiles<CR>
+nnoremap <silent> <C-p> :GFiles --cached --others --exclude-standard<CR>
 let g:NERDTreeLimitedSyntax = 1
-let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
-let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
+" let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
+" let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
 
 augroup nvim_term
   au!
@@ -233,6 +252,37 @@ let g:go_highlight_types=1
 let g:go_highlight_fields=1
 let g:go_highlight_functions=1
 let g:go_highlight_function_calls=1
-let g:go_fmt_fail_silently=1
-let g:go_def_mode='gopls'
-let g:go_info_mode='gopls'
+" let g:go_fmt_fail_silently=1
+" let g:go_def_mode='gopls'
+" let g:go_info_mode='gopls'
+let g:go_def_mapping_enabled=0
+" let g:go_metalinter_command='golangci-lint'
+" let g:go_metalinter_enabled = ['deadcode', 'errcheck', 'gosimple', 'govet', 'staticcheck', 'typecheck', 'unused', 'varcheck']
+" let g:go_metalinter_enabled = []
+" let g:go_metalinter_enabled=["govet", "golint", "errcheck"]
+ " let g:go_metalinter_autosave_enabled = ['vet', 'golint']
+" let g:go_metalinter_deadline = "60s"
+" let g:go_debug=['shell-commands']
+
+let g:ale_linters = {'go': ['golint', 'gofmt', 'gobuild', 'staticcheck']}
+let g:ale_sign_error = '✘'
+let g:ale_sign_warning = '⚠'
+" highlight ALEErrorSign ctermbg=NONE ctermfg=red
+" highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
+" let g:ale_go_go111module = 'on'
+" let g:go_staticcheck_lint_package=1
+let g:ale_go_staticcheck_lint_package = 1
+let g:ale_go_staticcheck_options = '-checks=all'
+" autocmd BufWritePre *.go :CocCommand editor.action.organizeImport
+let g:ale_fixers = {
+    \ 'go': ['gofmt', 'goimports']
+    \ }
+
+" function! s:go_guru_scope_from_git_root()
+"   let gitroot = system("git rev-parse --show-toplevel | tr -d '\n'")
+"   let pattern = escape(go#util#gopath() . "/src/", '\ /')
+"   return substitute(gitroot, pattern, "", "") . "/... -vendor/"
+" endfunction
+
+" au FileType go silent exe "GoGuruScope " . s:go_guru_scope_from_git_root()
+let g:go_snippet_engine = ""
